@@ -1,18 +1,20 @@
 package py.edu.uaa.FerreteriaApplication.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class UnidadMedida {
+public class TipoDocumento {
     @Id
     private String id;
     private String descripcion;
 
-    public UnidadMedida() {
+    public TipoDocumento() {
     }
 
-    public UnidadMedida(String id, String descripcion) {
+    public TipoDocumento(String id, String descripcion) {
         this.id = id;
         this.descripcion = descripcion;
     }
