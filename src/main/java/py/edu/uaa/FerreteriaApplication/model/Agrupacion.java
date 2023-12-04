@@ -1,4 +1,4 @@
-package py.edu.uaa.FerreteriaApplication.models;
+package py.edu.uaa.FerreteriaApplication.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -6,27 +6,27 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class TipoCliente {
+public class Agrupacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String nombre;
     private String descripcion;
 
-    public TipoCliente() {
+    public Agrupacion() {
     }
 
-    public TipoCliente(Long id, String nombre, String descripcion) {
+    public Agrupacion(Integer id, String nombre, String descripcion) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

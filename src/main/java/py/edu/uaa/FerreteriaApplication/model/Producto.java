@@ -1,4 +1,4 @@
-package py.edu.uaa.FerreteriaApplication.models;
+package py.edu.uaa.FerreteriaApplication.model;
 
 import jakarta.persistence.*;
 
