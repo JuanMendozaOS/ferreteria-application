@@ -25,6 +25,7 @@ public class AgrupacionController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public Agrupacion create(@RequestBody Agrupacion agrupacion){
+        System.out.println(agrupacion);
         return service.create(agrupacion);
     }
 
