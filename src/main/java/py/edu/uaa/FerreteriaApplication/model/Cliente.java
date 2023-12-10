@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String razonSocial;
     private String numeroDocumento;
     private String direccion;
@@ -21,7 +21,7 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(Integer id, String razonSocial, String numeroDocumento, String direccion, String telefono, String numeroCelular, TipoDocumento tipoDocumento, TipoCliente tipoCliente) {
+    public Cliente(Long id, String razonSocial, String numeroDocumento, String direccion, String telefono, String numeroCelular, TipoDocumento tipoDocumento, TipoCliente tipoCliente) {
         this.id = id;
         this.razonSocial = razonSocial;
         this.numeroDocumento = numeroDocumento;
@@ -32,11 +32,11 @@ public class Cliente {
         this.tipoCliente = tipoCliente;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
