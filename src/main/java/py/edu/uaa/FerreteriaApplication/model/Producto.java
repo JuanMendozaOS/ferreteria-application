@@ -14,7 +14,9 @@ public class Producto {
     private Integer stockMinimo;
     private BigDecimal precioCompra;
     private BigDecimal precioVenta;
-    private Integer tipoIva; // TODO: Investigar enums
+
+    @Enumerated(EnumType.STRING)
+    private TipoIva tipoIva;
     @ManyToOne
     private UnidadMedida unidadMedida;
     @ManyToOne
@@ -23,7 +25,7 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(Long id, String nombre, String descripcion, Integer stockMinimo, BigDecimal precioCompra, BigDecimal precioVenta, Integer tipoIva, UnidadMedida unidadMedida, Agrupacion agrupacion) {
+    public Producto(Long id, String nombre, String descripcion, Integer stockMinimo, BigDecimal precioCompra, BigDecimal precioVenta, TipoIva tipoIva, UnidadMedida unidadMedida, Agrupacion agrupacion) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -83,11 +85,11 @@ public class Producto {
         this.precioVenta = precioVenta;
     }
 
-    public Integer getTipoIva() {
+    public TipoIva getTipoIva() {
         return tipoIva;
     }
 
-    public void setTipoIva(Integer tipoIva) {
+    public void setTipoIva(TipoIva tipoIva) {
         this.tipoIva = tipoIva;
     }
 
