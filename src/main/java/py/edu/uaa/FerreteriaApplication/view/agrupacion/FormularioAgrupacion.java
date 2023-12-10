@@ -1,11 +1,10 @@
 package py.edu.uaa.FerreteriaApplication.view.agrupacion;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import py.edu.uaa.FerreteriaApplication.model.Agrupacion;
-import py.edu.uaa.FerreteriaApplication.service.AgrupacionService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,8 +60,11 @@ public class FormularioAgrupacion extends JFrame {
         nuevaAgrupacion.setDescripcion(descripcion);
 
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.exchange("http://localhost:8080/api/agrupaciones",
+        ResponseEntity<Agrupacion> response = restTemplate.exchange("http://localhost:8080/api/agrupaciones",
                 HttpMethod.POST, new HttpEntity<>(nuevaAgrupacion), Agrupacion.class);
+
+        JOptionPane.showMessageDialog(this, "Creado con ID: " + response.getBody().getId());
+
 
 
         JOptionPane.showMessageDialog(this, "Agrupación guardada correctamente");

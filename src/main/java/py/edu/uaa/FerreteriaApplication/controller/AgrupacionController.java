@@ -18,15 +18,32 @@ public class AgrupacionController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Agrupacion> findAll(){
+    public List<Agrupacion> findAll() {
         return service.findAll();
     }
 
-    @PostMapping
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Agrupacion create(@RequestBody Agrupacion agrupacion){
-        System.out.println(agrupacion);
+    public Agrupacion findById(@PathVariable Integer id) {
+        return service.findById(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Agrupacion create(@RequestBody Agrupacion agrupacion) {
         return service.create(agrupacion);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Agrupacion update(@RequestBody Agrupacion agrupacion) {
+        return service.update(agrupacion);
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@RequestBody Agrupacion agrupacion) {
+        service.delete(agrupacion);
     }
 
 }
