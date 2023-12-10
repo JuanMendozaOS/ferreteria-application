@@ -2,11 +2,15 @@ package py.edu.uaa.FerreteriaApplication.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class UnidadMedida {
     @Id
+    @NotNull
     private String id;
+
+    @NotNull
     private String descripcion;
 
     public UnidadMedida() {
