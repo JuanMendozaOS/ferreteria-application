@@ -11,15 +11,13 @@ public class TipoCliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    private String descripcion;
 
     public TipoCliente() {
     }
 
-    public TipoCliente(Long id, String nombre, String descripcion) {
+    public TipoCliente(Long id, String nombre) {
         this.id = id;
         this.nombre = nombre;
-        this.descripcion = descripcion;
     }
 
     public Long getId() {
@@ -36,13 +34,5 @@ public class TipoCliente {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 }

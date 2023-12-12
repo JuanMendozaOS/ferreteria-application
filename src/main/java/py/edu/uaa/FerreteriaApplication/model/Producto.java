@@ -13,6 +13,7 @@ public class Producto {
     private String descripcion;
     private Integer stockMinimo;
     private BigDecimal precioCompra;
+    private Integer porcentajeGanancia;
     private BigDecimal precioVenta;
 
     @Enumerated(EnumType.STRING)
@@ -21,20 +22,24 @@ public class Producto {
     private UnidadMedida unidadMedida;
     @ManyToOne
     private Agrupacion agrupacion;
+    @ManyToOne
+    private Proveedor proveedor;
 
     public Producto() {
     }
 
-    public Producto(Long id, String nombre, String descripcion, Integer stockMinimo, BigDecimal precioCompra, BigDecimal precioVenta, TipoIva tipoIva, UnidadMedida unidadMedida, Agrupacion agrupacion) {
+    public Producto(Long id, String nombre, String descripcion, Integer stockMinimo, BigDecimal precioCompra, Integer porcentajeGanancia, BigDecimal precioVenta, TipoIva tipoIva, UnidadMedida unidadMedida, Agrupacion agrupacion, Proveedor proveedor) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.stockMinimo = stockMinimo;
         this.precioCompra = precioCompra;
+        this.porcentajeGanancia = porcentajeGanancia;
         this.precioVenta = precioVenta;
         this.tipoIva = tipoIva;
         this.unidadMedida = unidadMedida;
         this.agrupacion = agrupacion;
+        this.proveedor = proveedor;
     }
 
     public Long getId() {
@@ -77,6 +82,14 @@ public class Producto {
         this.precioCompra = precioCompra;
     }
 
+    public Integer getPorcentajeGanancia() {
+        return porcentajeGanancia;
+    }
+
+    public void setPorcentajeGanancia(Integer porcentajeGanancia) {
+        this.porcentajeGanancia = porcentajeGanancia;
+    }
+
     public BigDecimal getPrecioVenta() {
         return precioVenta;
     }
@@ -107,5 +120,13 @@ public class Producto {
 
     public void setAgrupacion(Agrupacion agrupacion) {
         this.agrupacion = agrupacion;
+    }
+
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
     }
 }
