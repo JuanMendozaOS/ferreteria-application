@@ -9,7 +9,7 @@ import py.edu.uaa.FerreteriaApplication.service.TipoClienteService;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/tiposTipoCliente")
+@RequestMapping("api/tiposCliente")
 public class TipoClienteController {
     @Autowired
     private TipoClienteService service;

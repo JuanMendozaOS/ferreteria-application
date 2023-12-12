@@ -8,31 +8,30 @@ import jakarta.persistence.Id;
 @Entity
 public class TipoCliente {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nombre;
+    private String id;
+    private String descripcion;
 
     public TipoCliente() {
     }
 
-    public TipoCliente(Long id, String nombre) {
+    public TipoCliente(String id, String descripcion) {
         this.id = id;
-        this.nombre = nombre;
+        this.descripcion = descripcion;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }

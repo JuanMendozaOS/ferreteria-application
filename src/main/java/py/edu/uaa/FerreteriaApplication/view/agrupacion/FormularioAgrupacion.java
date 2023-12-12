@@ -56,7 +56,7 @@ public class FormularioAgrupacion extends JFrame {
         String descripcion = descripcionTextArea.getText();
 
         Agrupacion nuevaAgrupacion = new Agrupacion();
-        nuevaAgrupacion.setNombre(nombre);
+        nuevaAgrupacion.setDescripcion(nombre);
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Agrupacion> response = restTemplate.exchange("http://localhost:8080/api/agrupaciones",
