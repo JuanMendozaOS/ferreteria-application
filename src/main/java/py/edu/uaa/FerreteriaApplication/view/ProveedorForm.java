@@ -251,7 +251,6 @@ public class ProveedorForm extends javax.swing.JFrame {
         
         JOptionPane.showMessageDialog(this, "Creado con ID: " + response.getBody().getId());
 
-        JOptionPane.showMessageDialog(this, "Proveedor guardado correctamente");
     }//GEN-LAST:event_guardarBtnActionPerformed
 
     private void actualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarBtnActionPerformed
@@ -270,7 +269,14 @@ public class ProveedorForm extends javax.swing.JFrame {
     }//GEN-LAST:event_actualizarBtnActionPerformed
 
     private void borrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarBtnActionPerformed
-        // TODO add your handling code here:
+        if(idTxt.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Debe ingresar el id para eliminar");
+            return;
+        }
+        Long id = Long.valueOf(idTxt.getText());
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete("http://localhost:8080/api/proveedores/" + id);
+        JOptionPane.showMessageDialog(this, "Registro eliminado correctamente");
     }//GEN-LAST:event_borrarBtnActionPerformed
 
 

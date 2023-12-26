@@ -192,21 +192,31 @@ public class AgrupacionesForm extends javax.swing.JFrame {
 
 
         JOptionPane.showMessageDialog(this, "Creado con ID: " + response.getBody().getId());
-
-        JOptionPane.showMessageDialog(this, "Agrupacion guardado correctamente");
     }//GEN-LAST:event_guardarBtnActionPerformed
 
     private void actualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarBtnActionPerformed
+        if(idTxt.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Debe ingresar el id");
+            return;
+        }
         Integer id = Integer.valueOf(idTxt.getText());
         String descripcion = descripcionTxt.getText();
 
         Agrupacion nuevaAgrupacion = new Agrupacion(id,descripcion);
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.put("http://localhost:8080/api/agrupaciones", nuevaAgrupacion);
+        JOptionPane.showMessageDialog(this, "Registro actualizado correctamente");
     }//GEN-LAST:event_actualizarBtnActionPerformed
 
     private void borrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarBtnActionPerformed
-        // TODO add your handling code here:
+        if(idTxt.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Debe ingresar el id para eliminar");
+            return;
+        }
+        int id = Integer.parseInt(idTxt.getText());
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete("http://localhost:8080/api/agrupaciones/" + id);
+        JOptionPane.showMessageDialog(this, "Registro eliminado correctamente");
     }//GEN-LAST:event_borrarBtnActionPerformed
 
     /**

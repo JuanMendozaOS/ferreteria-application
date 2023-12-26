@@ -218,8 +218,6 @@ public class UnidadMedidaForm extends javax.swing.JFrame {
                 HttpMethod.POST, new HttpEntity<>(nuevaMedida), UnidadMedida.class);
         
         JOptionPane.showMessageDialog(this, "Creado con ID: " + response.getBody().getId());
-
-        JOptionPane.showMessageDialog(this, "Unidad de medida guardado correctamente");
     }//GEN-LAST:event_guardarBtnActionPerformed
 
     private void actualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarBtnActionPerformed
@@ -235,7 +233,14 @@ public class UnidadMedidaForm extends javax.swing.JFrame {
     }//GEN-LAST:event_actualizarBtnActionPerformed
 
     private void borrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarBtnActionPerformed
-        // TODO add your handling code here:
+        if(idTxt.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Debe ingresar el id para eliminar");
+            return;
+        }
+        String id = idTxt.getText();
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete("http://localhost:8080/api/unidadesMedida/" + id);
+        JOptionPane.showMessageDialog(this, "Registro eliminado correctamente");
     }//GEN-LAST:event_borrarBtnActionPerformed
 
     /**

@@ -267,6 +267,10 @@ public class ClienteForm extends javax.swing.JFrame {
     }//GEN-LAST:event_guardarBtnActionPerformed
 
     private void actualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarBtnActionPerformed
+        if(idCliTxt.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Debe ingresar el id del cliente para actualizar");
+            return;
+        }
         Long id = Long.valueOf(idCliTxt.getText());
         String razonSocial = razonSocialTxt.getText();
         String nroDocumento = nroDocuTxt.getText();
@@ -287,10 +291,14 @@ public class ClienteForm extends javax.swing.JFrame {
     }//GEN-LAST:event_actualizarBtnActionPerformed
 
     private void borrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarBtnActionPerformed
+        if(idCliTxt.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Debe ingresar el id del cliente para eliminar");
+            return;
+        }
         Long id = Long.valueOf(idCliTxt.getText());
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.delete("http://localhost:8080/api/clientes/" + id);
-
+        JOptionPane.showMessageDialog(this, "Cliente eliminado correctamente");
     }//GEN-LAST:event_borrarBtnActionPerformed
 
     private void tipoDocuTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tipoDocuTxtFocusGained
