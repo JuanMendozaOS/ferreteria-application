@@ -10,7 +10,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import py.edu.uaa.FerreteriaApplication.model.Agrupacion;
+import py.edu.uaa.FerreteriaApplication.model.Cliente;
 
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 
@@ -157,6 +159,8 @@ public class FacturaForm extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
+        fetchClientes();
+
         quitarBtn.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -259,6 +263,19 @@ public class FacturaForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void fetchClientes() {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Cliente[]> response = restTemplate.getForEntity("http://localhost:8080/api/clientes",
+                Cliente[].class);
+
+        Cliente[] dataList = response.getBody();
+        clienteCombo.addItem("");
+
+        for (Cliente cliente : dataList) {
+            clienteCombo.addItem(cliente.getRazonSocial());
+        }
+    }
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
         Menu menu = new Menu();

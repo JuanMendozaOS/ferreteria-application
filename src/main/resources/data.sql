@@ -24,4 +24,5 @@ INSERT INTO ferreteria.proveedor(nombre) VALUES ('MECHANIC');
 INSERT INTO ferreteria.proveedor(nombre) VALUES ('RIDGID');
 
 -- CLIENTES
-INSERT INTO ferreteria.cliente (direccion, numero_celular, numero_documento, razon_social, telefono, tipo_cliente_id, tipo_documento_id) VALUES('Perú 218', '0981 251 544', '5595040', 'JUAN MENDOZA', '021 0983 3213', 'INDIVIDUAL', 'CI');
+INSERT INTO ferreteria.cliente (direccion, numero_celular, numero_documento, razon_social, telefono, tipo_cliente_id, tipo_documento_id) VALUES('Perú 218', '0981 111 222', '4390233', 'JUAN MENDOZA', '021 0983 3213', 'INDIVIDUAL', 'CI');
+INSERT INTO ferreteria.cliente (direccion, numero_celular, numero_documento, razon_social, telefono, tipo_cliente_id, tipo_documento_id) VALUES('María Auxiliadora', '0981 999 123', '6034544', 'FRANCO PORTILLO', '021 2332 2323', 'INDIVIDUAL', 'CI');
