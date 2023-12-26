@@ -41,7 +41,7 @@ public class UnidadMedidaController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@RequestBody String id) {
+    public void delete(@PathVariable String id) {
         service.delete(id);
     }
 

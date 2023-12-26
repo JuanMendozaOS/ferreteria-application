@@ -42,7 +42,7 @@ public class AgrupacionController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@RequestBody Integer id) {
+    public void delete(@PathVariable Integer id) {
         service.delete(id);
     }
 

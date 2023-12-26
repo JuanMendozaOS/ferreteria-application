@@ -40,7 +40,7 @@ public class ProductoController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@RequestBody Long id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 
