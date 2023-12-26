@@ -12,6 +12,9 @@ import org.springframework.web.client.RestTemplate;
 import py.edu.uaa.FerreteriaApplication.model.Agrupacion;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -159,25 +162,8 @@ public class AgrupacionesForm extends javax.swing.JFrame {
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 280, 240));
 
-        agrupacionTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "ID", "Descripcion"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class
-            };
+        fetchData();
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
         jScrollPane1.setViewportView(agrupacionTable);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 100, 270, 190));
@@ -195,6 +181,31 @@ public class AgrupacionesForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void fetchData() {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Agrupacion[]> response = restTemplate.getForEntity("http://localhost:8080/api/agrupaciones",
+                Agrupacion[].class);
+
+        Agrupacion[] dataList = response.getBody();
+
+        // Get the table model
+        DefaultTableModel model = (DefaultTableModel) agrupacionTable.getModel();
+        if(model.getColumnCount() == 0) {
+            model.addColumn("ID");
+            model.addColumn("Descripción");
+        }
+
+        // Clear existing data in the table
+        model.setRowCount(0);
+
+        // Populate the table with the fetched data
+        for (Agrupacion agrupacion : dataList) {
+            Object[] rowData = {agrupacion.getId(), agrupacion.getDescripcion()};
+            model.addRow(rowData);
+        }
+    }
+
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
         setExtendedState(1);
@@ -217,6 +228,7 @@ public class AgrupacionesForm extends javax.swing.JFrame {
 
 
         JOptionPane.showMessageDialog(this, "Creado con ID: " + response.getBody().getId());
+        fetchData();
     }//GEN-LAST:event_guardarBtnActionPerformed
 
     private void actualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarBtnActionPerformed
@@ -231,6 +243,7 @@ public class AgrupacionesForm extends javax.swing.JFrame {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.put("http://localhost:8080/api/agrupaciones", nuevaAgrupacion);
         JOptionPane.showMessageDialog(this, "Registro actualizado correctamente");
+        fetchData();
     }//GEN-LAST:event_actualizarBtnActionPerformed
 
     private void borrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarBtnActionPerformed
@@ -242,6 +255,7 @@ public class AgrupacionesForm extends javax.swing.JFrame {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.delete("http://localhost:8080/api/agrupaciones/" + id);
         JOptionPane.showMessageDialog(this, "Registro eliminado correctamente");
+        fetchData();
     }//GEN-LAST:event_borrarBtnActionPerformed
 
     /**
