@@ -15,6 +15,7 @@ import py.edu.uaa.FerreteriaApplication.model.Producto;
 import py.edu.uaa.FerreteriaApplication.model.Proveedor;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.math.BigDecimal;
 
 /**
@@ -62,6 +63,8 @@ public class ProveedorForm extends javax.swing.JFrame {
         guardarBtn = new javax.swing.JButton();
         actualizarBtn = new javax.swing.JButton();
         borrarBtn = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        proveedorTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,7 +76,7 @@ public class ProveedorForm extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Corbel", 0, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("PROVEEDOR");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 20, -1, -1));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, -1, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -83,7 +86,7 @@ public class ProveedorForm extends javax.swing.JFrame {
                 jLabel10MouseClicked(evt);
             }
         });
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 0, -1, -1));
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 0, -1, -1));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
@@ -93,9 +96,9 @@ public class ProveedorForm extends javax.swing.JFrame {
                 jLabel11MouseClicked(evt);
             }
         });
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 0, -1, -1));
+        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 0, -1, -1));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 680, 90));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 890, 90));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -213,6 +216,11 @@ public class ProveedorForm extends javax.swing.JFrame {
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 420, 340));
 
+        fetchData();
+        jScrollPane1.setViewportView(proveedorTable);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 110, 430, 280));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -226,7 +234,34 @@ public class ProveedorForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    private void fetchData(){
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Proveedor[]> response = restTemplate.getForEntity("http://localhost:8080/api/proveedores",
+                Proveedor[].class);
 
+        Proveedor[] dataList = response.getBody();
+
+        // Get the table model
+        DefaultTableModel model = (DefaultTableModel) proveedorTable.getModel();
+        if(model.getColumnCount() == 0) {
+            model.addColumn("ID");
+            model.addColumn("Nombre");
+            model.addColumn("Telefono");
+            model.addColumn("Direccion");
+            model.addColumn("Limite de Credito");
+            model.addColumn("Credito Disponible");
+        }
+
+        // Clear existing data in the table
+        model.setRowCount(0);
+
+        // Populate the table with the fetched data
+        for (Proveedor proveedor : dataList) {
+            Object[] rowData = {proveedor.getId(), proveedor.getNombre(), proveedor.getTelefono(),
+                    proveedor.getDireccion(), proveedor.getLimiteCredito(), proveedor.getCreditoDisponible()};
+            model.addRow(rowData);
+        }
+    }
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
         setExtendedState(1);
     }//GEN-LAST:event_jLabel11MouseClicked
@@ -250,7 +285,7 @@ public class ProveedorForm extends javax.swing.JFrame {
                 HttpMethod.POST, new HttpEntity<>(nuevoProveedor), Proveedor.class);
         
         JOptionPane.showMessageDialog(this, "Creado con ID: " + response.getBody().getId());
-
+        fetchData();
     }//GEN-LAST:event_guardarBtnActionPerformed
 
     private void actualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarBtnActionPerformed
@@ -266,6 +301,7 @@ public class ProveedorForm extends javax.swing.JFrame {
         restTemplate.put("http://localhost:8080/api/proveedores", nuevoProveedor);
         
         JOptionPane.showMessageDialog(this, "Proveedor actualizado correctamente");
+        fetchData();
     }//GEN-LAST:event_actualizarBtnActionPerformed
 
     private void borrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarBtnActionPerformed
@@ -277,6 +313,7 @@ public class ProveedorForm extends javax.swing.JFrame {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.delete("http://localhost:8080/api/proveedores/" + id);
         JOptionPane.showMessageDialog(this, "Registro eliminado correctamente");
+        fetchData();
     }//GEN-LAST:event_borrarBtnActionPerformed
 
 
@@ -335,8 +372,10 @@ public class ProveedorForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField limiteCreditoTxt;
     private javax.swing.JTextField nombreTxt;
+    private javax.swing.JTable proveedorTable;
     private javax.swing.JTextField telefonoTxt;
     // End of variables declaration//GEN-END:variables
 }

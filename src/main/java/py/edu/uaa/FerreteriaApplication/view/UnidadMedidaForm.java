@@ -13,6 +13,7 @@ import py.edu.uaa.FerreteriaApplication.model.Agrupacion;
 import py.edu.uaa.FerreteriaApplication.model.UnidadMedida;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -51,6 +52,8 @@ public class UnidadMedidaForm extends javax.swing.JFrame {
         guardarBtn = new javax.swing.JButton();
         actualizarBtn = new javax.swing.JButton();
         borrarBtn = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        unidadTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,7 +88,7 @@ public class UnidadMedidaForm extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(98, Short.MAX_VALUE)
+                .addContainerGap(168, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(34, 34, 34)
                 .addComponent(jLabel11)
@@ -108,7 +111,7 @@ public class UnidadMedidaForm extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, -1));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 660, -1));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -184,6 +187,11 @@ public class UnidadMedidaForm extends javax.swing.JFrame {
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 370, 290));
 
+        fetchData();
+        jScrollPane1.setViewportView(unidadTable);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, 270, 250));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -197,7 +205,29 @@ public class UnidadMedidaForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    private void fetchData(){
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<UnidadMedida[]> response = restTemplate.getForEntity("http://localhost:8080/api/unidadesMedida",
+                UnidadMedida[].class);
 
+        UnidadMedida[] dataList = response.getBody();
+
+        // Get the table model
+        DefaultTableModel model = (DefaultTableModel) unidadTable.getModel();
+        if(model.getColumnCount() == 0) {
+            model.addColumn("ID");
+            model.addColumn("Descripción");
+        }
+
+        // Clear existing data in the table
+        model.setRowCount(0);
+
+        // Populate the table with the fetched data
+        for (UnidadMedida unidadMedida : dataList) {
+            Object[] rowData = {unidadMedida.getId(), unidadMedida.getDescripcion()};
+            model.addRow(rowData);
+        }
+    }
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
         Menu menu = new Menu();
         menu.setVisible(true);
@@ -218,6 +248,7 @@ public class UnidadMedidaForm extends javax.swing.JFrame {
                 HttpMethod.POST, new HttpEntity<>(nuevaMedida), UnidadMedida.class);
         
         JOptionPane.showMessageDialog(this, "Creado con ID: " + response.getBody().getId());
+        fetchData();
     }//GEN-LAST:event_guardarBtnActionPerformed
 
     private void actualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarBtnActionPerformed
@@ -229,7 +260,7 @@ public class UnidadMedidaForm extends javax.swing.JFrame {
         restTemplate.put("http://localhost:8080/api/unidadesMedida", nuevaMedida);
         
         JOptionPane.showMessageDialog(this, "Unidad de medida actualizado correctamente");
-        
+        fetchData();
     }//GEN-LAST:event_actualizarBtnActionPerformed
 
     private void borrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarBtnActionPerformed
@@ -241,6 +272,7 @@ public class UnidadMedidaForm extends javax.swing.JFrame {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.delete("http://localhost:8080/api/unidadesMedida/" + id);
         JOptionPane.showMessageDialog(this, "Registro eliminado correctamente");
+        fetchData();
     }//GEN-LAST:event_borrarBtnActionPerformed
 
     /**
@@ -292,5 +324,7 @@ public class UnidadMedidaForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable unidadTable;
     // End of variables declaration//GEN-END:variables
 }

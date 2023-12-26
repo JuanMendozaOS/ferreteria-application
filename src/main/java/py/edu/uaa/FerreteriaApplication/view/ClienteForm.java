@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import py.edu.uaa.FerreteriaApplication.model.Agrupacion;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.math.BigDecimal;
 
@@ -69,6 +70,8 @@ public class ClienteForm extends javax.swing.JFrame {
         borrarBtn = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         idCliTxt = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        clienteTable = new javax.swing.JTable();
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -113,8 +116,8 @@ public class ClienteForm extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(300, 300, 300)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(506, 506, 506)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel10)
@@ -223,6 +226,9 @@ public class ClienteForm extends javax.swing.JFrame {
         jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 188, -1, -1));
         jPanel2.add(idCliTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 185, 140, -1));
 
+        fetchData();
+        jScrollPane1.setViewportView(clienteTable);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -230,19 +236,54 @@ public class ClienteForm extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 610, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 256, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 656, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(40, 40, 40))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    private void fetchData(){
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Cliente[]> response = restTemplate.getForEntity("http://localhost:8080/api/clientes",
+                Cliente[].class);
 
+        Cliente[] dataList = response.getBody();
+
+        // Get the table model
+        DefaultTableModel model = (DefaultTableModel) clienteTable.getModel();
+        if(model.getColumnCount() == 0) {
+            model.addColumn("ID");
+            model.addColumn("Razon Social");
+            model.addColumn("Nro de documento");
+            model.addColumn("Direccion");
+            model.addColumn("Telefono");
+            model.addColumn("Nro Celular");
+            model.addColumn("Tipo documento");
+            model.addColumn("Tipo cliente");
+        }
+
+        // Clear existing data in the table
+        model.setRowCount(0);
+
+        // Populate the table with the fetched data
+        for (Cliente cliente : dataList) {
+            Object[] rowData = {cliente.getId(), cliente.getRazonSocial(), cliente.getNumeroDocumento(),
+                    cliente.getDireccion(), cliente.getTelefono(), cliente.getNumeroCelular(),
+                    cliente.getTipoDocumento().getId(), cliente.getTipoCliente().getId()};
+            model.addRow(rowData);
+        }
+    }
     private void guardarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBtnActionPerformed
         String razonSocial = razonSocialTxt.getText();
         String nroDocumento = nroDocuTxt.getText();
@@ -264,6 +305,7 @@ public class ClienteForm extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Creado con ID: " + response.getBody().getId());
 
         JOptionPane.showMessageDialog(this, "Cliente guardado correctamente");
+        fetchData();
     }//GEN-LAST:event_guardarBtnActionPerformed
 
     private void actualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarBtnActionPerformed
@@ -288,6 +330,7 @@ public class ClienteForm extends javax.swing.JFrame {
 
 
         JOptionPane.showMessageDialog(this, "Cliente actualizado correctamente");
+        fetchData();
     }//GEN-LAST:event_actualizarBtnActionPerformed
 
     private void borrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarBtnActionPerformed
@@ -299,6 +342,7 @@ public class ClienteForm extends javax.swing.JFrame {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.delete("http://localhost:8080/api/clientes/" + id);
         JOptionPane.showMessageDialog(this, "Cliente eliminado correctamente");
+        fetchData();
     }//GEN-LAST:event_borrarBtnActionPerformed
 
     private void tipoDocuTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tipoDocuTxtFocusGained
@@ -377,6 +421,7 @@ public class ClienteForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton actualizarBtn;
     private javax.swing.JButton borrarBtn;
+    private javax.swing.JTable clienteTable;
     private javax.swing.JTextField direccionTxt;
     private javax.swing.JButton guardarBtn;
     private javax.swing.JTextField idCliTxt;
@@ -394,6 +439,7 @@ public class ClienteForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField nroCelularTxt;
     private javax.swing.JTextField nroDocuTxt;
     private javax.swing.JTextField razonSocialTxt;
