@@ -17,7 +17,11 @@ INSERT INTO ferreteria.agrupacion(descripcion) VALUES('Varios');
 
 -- UNIDAD DE MEDIDA
 INSERT INTO ferreteria.unidad_medida(id, descripcion) VALUES ('UNI', 'Unidad');
+INSERT INTO ferreteria.unidad_medida(id, descripcion) VALUES ('KG', 'Kilogramos');
 
 -- PROVEEDOR
 INSERT INTO ferreteria.proveedor(nombre) VALUES ('MECHANIC');
 INSERT INTO ferreteria.proveedor(nombre) VALUES ('RIDGID');
+
+-- CLIENTES
+INSERT INTO ferreteria.cliente (direccion, numero_celular, numero_documento, razon_social, telefono, tipo_cliente_id, tipo_documento_id) VALUES('Perú 218', '0981 251 544', '5595040', 'JUAN MENDOZA', '021 0983 3213', 'INDIVIDUAL', 'CI');
