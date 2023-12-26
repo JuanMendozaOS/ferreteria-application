@@ -24,6 +24,7 @@ public class GlobalExceptionHandler {
         Map<String, String> hashMap = new HashMap<>();
         hashMap.put("code", "500");
         hashMap.put("errorMessage", "An unexpected error has ocurred");
+        exception.printStackTrace();
         return new ResponseEntity<>(hashMap, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

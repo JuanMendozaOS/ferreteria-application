@@ -41,7 +41,7 @@ public class ProveedorController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable Long entity) {
-        service.delete(entity);
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }
