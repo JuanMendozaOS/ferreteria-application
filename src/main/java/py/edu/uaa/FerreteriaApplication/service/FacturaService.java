@@ -39,7 +39,7 @@ public class FacturaService implements IEntityService<Factura, Long> {
     }
 
     @Override
-    public void delete(Factura entity) {
-        repository.delete(entity);
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }

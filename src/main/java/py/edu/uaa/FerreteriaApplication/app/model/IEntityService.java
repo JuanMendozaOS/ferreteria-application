@@ -11,5 +11,5 @@ public interface IEntityService<T, ID> {
 
     T update(T entity);
 
-    void delete(T entity);
+    void delete(ID id);
 }

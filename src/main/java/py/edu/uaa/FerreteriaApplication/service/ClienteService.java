@@ -39,7 +39,7 @@ public class ClienteService implements IEntityService<Cliente, Long> {
     }
 
     @Override
-    public void delete(Cliente entity) {
-        repository.delete(entity);
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }

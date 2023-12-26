@@ -39,7 +39,7 @@ public class TipoDocumentoService implements IEntityService<TipoDocumento, Strin
     }
 
     @Override
-    public void delete(TipoDocumento entity) {
-        repository.delete(entity);
+    public void delete(String id) {
+        repository.deleteById(id);
     }
 }

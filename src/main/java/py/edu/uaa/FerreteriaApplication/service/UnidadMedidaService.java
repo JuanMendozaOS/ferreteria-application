@@ -39,7 +39,7 @@ public class UnidadMedidaService implements IEntityService<UnidadMedida, String>
     }
 
     @Override
-    public void delete(UnidadMedida entity) {
-        repository.delete(entity);
+    public void delete(String id) {
+        repository.deleteById(id);
     }
 }

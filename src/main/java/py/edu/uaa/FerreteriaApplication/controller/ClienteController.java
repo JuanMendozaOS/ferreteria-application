@@ -38,10 +38,10 @@ public class ClienteController {
         return service.update(entity);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@RequestBody Cliente entity) {
-        service.delete(entity);
+    public void delete(@RequestBody Long id) {
+        service.delete(id);
     }
 
 }

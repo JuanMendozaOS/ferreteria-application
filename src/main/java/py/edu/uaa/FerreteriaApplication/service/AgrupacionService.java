@@ -39,7 +39,7 @@ public class AgrupacionService implements IEntityService<Agrupacion, Integer> {
     }
 
     @Override
-    public void delete(Agrupacion agrupacion) {
-        agrupacionRepository.delete(agrupacion);
+    public void delete(Integer id) {
+        agrupacionRepository.deleteById(id);
     }
 }

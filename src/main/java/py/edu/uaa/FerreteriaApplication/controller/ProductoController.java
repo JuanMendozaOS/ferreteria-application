@@ -38,10 +38,10 @@ public class ProductoController {
         return service.update(entity);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@RequestBody Producto entity) {
-        service.delete(entity);
+    public void delete(@RequestBody Long id) {
+        service.delete(id);
     }
 
 }

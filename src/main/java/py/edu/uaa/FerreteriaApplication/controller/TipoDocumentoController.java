@@ -38,9 +38,9 @@ public class TipoDocumentoController {
         return service.update(entity);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@RequestBody TipoDocumento entity) {
-        service.delete(entity);
+    public void delete(@RequestBody String id) {
+        service.delete(id);
     }
 }

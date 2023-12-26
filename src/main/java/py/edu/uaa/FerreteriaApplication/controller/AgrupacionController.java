@@ -40,10 +40,10 @@ public class AgrupacionController {
         return service.update(agrupacion);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@RequestBody Agrupacion agrupacion) {
-        service.delete(agrupacion);
+    public void delete(@RequestBody Integer id) {
+        service.delete(id);
     }
 
 }

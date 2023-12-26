@@ -38,9 +38,9 @@ public class TipoClienteController {
         return service.update(entity);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@RequestBody TipoCliente entity) {
-        service.delete(entity);
+    public void delete(@RequestBody String id) {
+        service.delete(id);
     }
 }

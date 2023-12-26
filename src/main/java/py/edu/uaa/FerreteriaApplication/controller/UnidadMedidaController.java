@@ -39,10 +39,10 @@ public class UnidadMedidaController {
         return service.update(entity);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@RequestBody UnidadMedida entity) {
-        service.delete(entity);
+    public void delete(@RequestBody String id) {
+        service.delete(id);
     }
 
 }

@@ -39,10 +39,10 @@ public class FacturaController {
         return service.update(entity);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@RequestBody Factura entity) {
-        service.delete(entity);
+    public void delete(@RequestBody Long id) {
+        service.delete(id);
     }
 
 }

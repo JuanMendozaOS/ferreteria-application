@@ -39,9 +39,9 @@ public class ProveedorController {
         return service.update(entity);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@RequestBody Proveedor entity) {
+    public void delete(@RequestBody Long entity) {
         service.delete(entity);
     }
 }

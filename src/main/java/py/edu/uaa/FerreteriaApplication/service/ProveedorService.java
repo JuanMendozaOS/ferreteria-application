@@ -39,7 +39,7 @@ public class ProveedorService implements IEntityService<Proveedor, Long> {
     }
 
     @Override
-    public void delete(Proveedor entity) {
-        repository.delete(entity);
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }
