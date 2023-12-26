@@ -183,8 +183,18 @@ public class FacturaForm extends javax.swing.JFrame {
         jScrollPane1.setViewportView(quitarBtn);
 
         agregarBtn.setText("Agregar");
+        agregarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarBtnActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Quitar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Total Exenta");
 
@@ -273,7 +283,8 @@ public class FacturaForm extends javax.swing.JFrame {
         clienteCombo.addItem("");
 
         for (Cliente cliente : dataList) {
-            clienteCombo.addItem(cliente.getRazonSocial());
+            String item = String.format("%s %s", cliente.getId(), cliente.getRazonSocial());
+            clienteCombo.addItem(item);
         }
     }
 
@@ -302,6 +313,16 @@ public class FacturaForm extends javax.swing.JFrame {
         }
     }       
 //GEN-LAST:event_condicionTxtFocusLost
+
+    private void agregarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarBtnActionPerformed
+        String item = (String) clienteCombo.getSelectedItem();
+        String id = item.split(" ")[0];
+        System.out.println(id);
+    }//GEN-LAST:event_agregarBtnActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
  
     /**
