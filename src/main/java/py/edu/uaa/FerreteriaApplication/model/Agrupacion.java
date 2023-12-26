@@ -20,6 +20,11 @@ public class Agrupacion {
         this.descripcion = descripcion;
     }
 
+    public Agrupacion(String descripcion) {
+        this.descripcion = descripcion;
+
+    }
+
     public Integer getId() {
         return id;
     }

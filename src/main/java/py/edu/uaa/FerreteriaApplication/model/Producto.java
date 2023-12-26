@@ -42,6 +42,32 @@ public class Producto {
         this.proveedor = proveedor;
     }
 
+    public Producto(String nombre, String descripcion, Integer stockminimo, BigDecimal precioCompra, Integer porGanancia,BigDecimal precioVenta, UnidadMedida unidadMedida,TipoIva tipoIva, Agrupacion agrupacion, Proveedor proveedor) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.stockMinimo = stockminimo;
+        this.precioCompra = precioCompra;
+        this.porcentajeGanancia = porGanancia;
+        this.precioVenta = precioVenta;
+        this.tipoIva = tipoIva;
+        this.unidadMedida = unidadMedida;
+        this.agrupacion = agrupacion;
+        this.proveedor = proveedor;
+    }
+
+    public Producto(String nombre, String descripcion, Integer stockminimo, BigDecimal precioCompra, Integer porGanancia, BigDecimal precioVenta, UnidadMedida unidadMedida, Agrupacion agrupacion, Proveedor proveedor) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.stockMinimo = stockminimo;
+        this.precioCompra = precioCompra;
+        this.porcentajeGanancia = porGanancia;
+        this.precioVenta = precioVenta;
+        this.tipoIva = tipoIva;
+        this.unidadMedida = unidadMedida;
+        this.agrupacion = agrupacion;
+        this.proveedor = proveedor;
+    }
+
     public Long getId() {
         return id;
     }

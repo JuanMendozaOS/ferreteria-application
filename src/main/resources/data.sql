@@ -17,3 +17,7 @@ INSERT INTO ferreteria.agrupacion(descripcion) VALUES('Varios');
 
 -- UNIDAD DE MEDIDA
 INSERT INTO ferreteria.unidad_medida(id, descripcion) VALUES ('UNI', 'Unidad');
+
+-- PROVEEDOR
+INSERT INTO ferreteria.proveedor(nombre) VALUES ('MECHANIC');
+INSERT INTO ferreteria.proveedor(nombre) VALUES ('RIDGID');

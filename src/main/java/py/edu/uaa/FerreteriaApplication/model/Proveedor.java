@@ -30,6 +30,15 @@ public class Proveedor {
         this.creditoDisponible = creditoDisponible;
     }
 
+    public Proveedor(String nombre, String telefono, String direccion, BigDecimal limiteCredito, BigDecimal saldoActual) {
+        this.id = id;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.direccion = direccion;
+        this.limiteCredito = limiteCredito;
+        this.creditoDisponible = saldoActual;
+    }
+
     public Long getId() {
         return id;
     }

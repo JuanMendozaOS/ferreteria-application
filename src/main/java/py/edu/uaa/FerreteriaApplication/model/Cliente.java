@@ -32,6 +32,19 @@ public class Cliente {
         this.tipoCliente = tipoCliente;
     }
 
+    public Cliente(String razonSocial, String nroDocumento, String direccion, String telefono, String nroCelular, TipoDocumento tipoDocumento, TipoCliente tipoCliente) {
+        this.razonSocial = razonSocial;
+        this.numeroDocumento = nroDocumento;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.numeroCelular = nroCelular;
+        this.tipoDocumento = tipoDocumento;
+        this.tipoCliente = tipoCliente;
+    }
+
+    public Cliente(Long id) {
+    }
+
     public Long getId() {
         return id;
     }
