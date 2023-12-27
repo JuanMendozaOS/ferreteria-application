@@ -15,6 +15,7 @@ import py.edu.uaa.FerreteriaApplication.model.Factura;
 import py.edu.uaa.FerreteriaApplication.model.Proveedor;
 
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -68,7 +69,7 @@ public class ConsultaForm extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Corbel", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("CONSULTA DE VENTAS");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, 370, 50));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 20, 370, 50));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
@@ -78,7 +79,7 @@ public class ConsultaForm extends javax.swing.JFrame {
                 jLabel11MouseClicked(evt);
             }
         });
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 0, -1, -1));
+        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 0, -1, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -88,9 +89,9 @@ public class ConsultaForm extends javax.swing.JFrame {
                 jLabel10MouseClicked(evt);
             }
         });
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 0, -1, -1));
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 0, -1, -1));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 90));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 760, 90));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -100,12 +101,30 @@ public class ConsultaForm extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
         jLabel3.setText("Desde fecha: ");
 
-        desdeFechaTxt.setText("jTextField1");
+        desdeFechaTxt.setForeground(new java.awt.Color(153, 153, 153));
+        desdeFechaTxt.setText("dd/mm/yyyy");
+        desdeFechaTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                desdeFechaTxtFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                desdeFechaTxtFocusLost(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
         jLabel4.setText("Hasta fecha:");
 
-        hastaFechaTxt.setText("jTextField2");
+        hastaFechaTxt.setForeground(new java.awt.Color(153, 153, 153));
+        hastaFechaTxt.setText("dd/mm/yyyy");
+        hastaFechaTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                hastaFechaTxtFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                hastaFechaTxtFocusLost(evt);
+            }
+        });
 
         aceptarBtn.setText("Aceptar");
         aceptarBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -157,12 +176,22 @@ public class ConsultaForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 470, 120));
-        fetchClientes();
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 470, 120));
 
+        consultaTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
         jScrollPane1.setViewportView(consultaTable);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 470, 200));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 720, 200));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -223,6 +252,34 @@ public class ConsultaForm extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_aceptarBtnActionPerformed
+
+    private void desdeFechaTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_desdeFechaTxtFocusGained
+        if (desdeFechaTxt.getText().equals("dd/mm/yyyy")){
+            desdeFechaTxt.setText("");
+            desdeFechaTxt.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_desdeFechaTxtFocusGained
+
+    private void desdeFechaTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_desdeFechaTxtFocusLost
+         if(desdeFechaTxt.getText().equals("")){
+            desdeFechaTxt.setText("dd/mm/yyyy");
+            desdeFechaTxt.setForeground(new Color (153,153,153));
+        }
+    }//GEN-LAST:event_desdeFechaTxtFocusLost
+
+    private void hastaFechaTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_hastaFechaTxtFocusGained
+        if (hastaFechaTxt.getText().equals("dd/mm/yyyy")){
+            hastaFechaTxt.setText("");
+            hastaFechaTxt.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_hastaFechaTxtFocusGained
+
+    private void hastaFechaTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_hastaFechaTxtFocusLost
+         if(hastaFechaTxt.getText().equals("")){
+            hastaFechaTxt.setText("dd/mm/yyyy");
+            hastaFechaTxt.setForeground(new Color (153,153,153));
+        }
+    }//GEN-LAST:event_hastaFechaTxtFocusLost
 
     private void fetchClientes() {
         RestTemplate restTemplate = new RestTemplate();

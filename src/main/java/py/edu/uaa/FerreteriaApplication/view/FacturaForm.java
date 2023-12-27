@@ -42,6 +42,7 @@ public class FacturaForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        condicionTxt = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -52,9 +53,9 @@ public class FacturaForm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         fechaTxt = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        condicionTxt = new javax.swing.JTextField();
         clienteCombo = new javax.swing.JComboBox<>();
         buscarBtn = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         quitarBtn = new javax.swing.JTable();
@@ -74,8 +75,21 @@ public class FacturaForm extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         agregarBtn = new javax.swing.JButton();
         borrarBtn = new javax.swing.JButton();
-        fetchProductos();
-        fetchClientes();
+        jLabel13 = new javax.swing.JLabel();
+        tipoIvaTxt = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        totalTxt = new javax.swing.JTextField();
+
+        condicionTxt.setForeground(new java.awt.Color(153, 153, 153));
+        condicionTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                condicionTxtFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                condicionTxtFocusLost(evt);
+            }
+        });
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -116,18 +130,18 @@ public class FacturaForm extends javax.swing.JFrame {
 
         jLabel3.setText("Fecha");
 
-        jLabel4.setText("Condicion de pago");
-
-        condicionTxt.setForeground(new java.awt.Color(153, 153, 153));
-        condicionTxt.setText("Contado o Credito");
-        condicionTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+        fechaTxt.setForeground(new java.awt.Color(153, 153, 153));
+        fechaTxt.setText("dd/mm/yyyy");
+        fechaTxt.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                condicionTxtFocusGained(evt);
+                fechaTxtFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                condicionTxtFocusLost(evt);
+                fechaTxtFocusLost(evt);
             }
         });
+
+        jLabel4.setText("Condicion de pago");
 
         buscarBtn.setText("Consulta de ventas");
         buscarBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -135,6 +149,8 @@ public class FacturaForm extends javax.swing.JFrame {
                 buscarBtnActionPerformed(evt);
             }
         });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Contado", "Credito" }));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -147,15 +163,15 @@ public class FacturaForm extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addComponent(clienteCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
-                        .addComponent(condicionTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(buscarBtn)))
                 .addContainerGap())
         );
@@ -171,8 +187,8 @@ public class FacturaForm extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(condicionTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buscarBtn))
+                    .addComponent(buscarBtn)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -266,6 +282,8 @@ public class FacturaForm extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
         jLabel9.setText("Cantidad");
 
+        precioUnitarioTxt.setEditable(false);
+
         jLabel12.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
         jLabel12.setText("Precio Unitario");
 
@@ -282,6 +300,12 @@ public class FacturaForm extends javax.swing.JFrame {
                 borrarBtnActionPerformed(evt);
             }
         });
+
+        jLabel13.setText("Tipo Iva");
+
+        jLabel14.setText("jLabel14");
+
+        totalTxt.setEditable(false);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -305,9 +329,15 @@ public class FacturaForm extends javax.swing.JFrame {
                             .addComponent(agregarBtn, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(borrarBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel12)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel14))
                         .addGap(18, 18, 18)
-                        .addComponent(precioUnitarioTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(precioUnitarioTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                            .addComponent(tipoIvaTxt)
+                            .addComponent(totalTxt))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -332,7 +362,15 @@ public class FacturaForm extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(precioUnitarioTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(158, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(tipoIvaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 320, 300));
@@ -406,6 +444,20 @@ public class FacturaForm extends javax.swing.JFrame {
         consultaForm.setVisible(true);
     }//GEN-LAST:event_buscarBtnActionPerformed
 
+    private void fechaTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fechaTxtFocusGained
+        if (fechaTxt.getText().equals("dd/mm/yyyy")){
+            fechaTxt.setText("");
+            fechaTxt.setForeground(new Color(0,0,0));
+        }
+    }//GEN-LAST:event_fechaTxtFocusGained
+
+    private void fechaTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fechaTxtFocusLost
+         if(fechaTxt.getText().equals("")){
+            fechaTxt.setText("dd/mm/yyyy");
+            fechaTxt.setForeground(new Color (153,153,153));
+        }
+    }//GEN-LAST:event_fechaTxtFocusLost
+
   private void fetchProductos() {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Producto[]> response = restTemplate.getForEntity("http://localhost:8080/api/productos",
@@ -466,10 +518,13 @@ public class FacturaForm extends javax.swing.JFrame {
     private javax.swing.JButton guardarBtn;
     private javax.swing.JTextField iva10Txt;
     private javax.swing.JTextField iva5Txt;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -487,5 +542,7 @@ public class FacturaForm extends javax.swing.JFrame {
     private javax.swing.JTextField precioUnitarioTxt;
     private javax.swing.JComboBox<String> productoCombo;
     private javax.swing.JTable quitarBtn;
+    private javax.swing.JTextField tipoIvaTxt;
+    private javax.swing.JTextField totalTxt;
     // End of variables declaration//GEN-END:variables
 }
