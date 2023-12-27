@@ -11,9 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import py.edu.uaa.FerreteriaApplication.model.Agrupacion;
 import py.edu.uaa.FerreteriaApplication.model.Cliente;
+import py.edu.uaa.FerreteriaApplication.model.Producto;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
 
 
 /**
@@ -327,9 +329,8 @@ public class FacturaForm extends javax.swing.JFrame {
 //GEN-LAST:event_condicionTxtFocusLost
 
     private void agregarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarBtnActionPerformed
-        String item = (String) clienteCombo.getSelectedItem();
-        String id = item.split(" ")[0];
-        System.out.println(id);
+        AgregarDetalle agregarDetalle = new AgregarDetalle();
+        agregarDetalle.setVisible(true);
     }//GEN-LAST:event_agregarBtnActionPerformed
 
     private void borrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarBtnActionPerformed
