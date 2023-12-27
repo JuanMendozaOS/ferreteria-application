@@ -5,15 +5,20 @@
  */
 package py.edu.uaa.FerreteriaApplication.view;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import py.edu.uaa.FerreteriaApplication.app.exception.ResourceNotFoundException;
 import py.edu.uaa.FerreteriaApplication.model.*;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -152,7 +157,7 @@ public class FacturaForm extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Contado", "Credito" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CONTADO", "CREDITO" }));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -219,6 +224,11 @@ public class FacturaForm extends javax.swing.JFrame {
         jLabel7.setText("Total IVA 10%");
 
         guardarBtn.setText("Guardar");
+        guardarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -390,17 +400,50 @@ public class FacturaForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void guardarBtnActionPerformed(ActionEvent evt) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String selectedCliente = (String) clienteCombo.getSelectedItem();
+        Long clienteId = Long.valueOf(selectedCliente.split(" ")[0]);
+        Cliente cliente = new Cliente();
+        cliente.setId(clienteId);
+
+        LocalDate fecha = LocalDate.parse(fechaTxt.getText(), formatter);
+
+        Condicion condicion = Condicion.valueOf((String) jComboBox1.getSelectedItem());
+
+        BigDecimal totalExenta = new BigDecimal(exentaTxt.getText());
+        BigDecimal totalIva5 = new BigDecimal(iva5Txt.getText());
+        BigDecimal totalIva10 = new BigDecimal(iva10Txt.getText());
+
+        BigDecimal importeTotal = totalExenta.add(totalIva5).add(totalIva10);
+
+        Factura factura = new Factura();
+        factura.setFecha(fecha);
+        factura.setCliente(cliente);
+        factura.setImporteTotalExenta(totalExenta);
+        factura.setImporteTotalIva5(totalIva5);
+        factura.setImporteTotalIva10(totalIva10);
+        factura.setImporteTotalComprobante(importeTotal);
+        factura.setCondicionPago(condicion);
+
+        factura.setDetalles(detalles);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Factura> response = restTemplate.exchange("http://localhost:8080/api/facturas",
+                HttpMethod.POST, new HttpEntity<>(factura), Factura.class);
+
+        JOptionPane.showMessageDialog(this, "Factura creada con ID: " + response.getBody().getId());
+
+    }
+
     private void cantidadTxtActionPerformed(ActionEvent evt) {
         String cantidadString = cantidadTxt.getText();
-        System.out.println(cantidadString);
         if(cantidadString.equals("")){
             totalTxt.setText("");
             return;
         }
 
         String selectedProducto = (String) productoCombo.getSelectedItem();
-        System.out.println(selectedProducto);
-
         if(selectedProducto.equals("")){
             return;
         }

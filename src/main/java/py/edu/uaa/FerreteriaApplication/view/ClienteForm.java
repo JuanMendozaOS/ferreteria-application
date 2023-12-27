@@ -304,7 +304,6 @@ public class ClienteForm extends javax.swing.JFrame {
 
         JOptionPane.showMessageDialog(this, "Creado con ID: " + response.getBody().getId());
 
-        JOptionPane.showMessageDialog(this, "Cliente guardado correctamente");
         fetchData();
     }//GEN-LAST:event_guardarBtnActionPerformed
 

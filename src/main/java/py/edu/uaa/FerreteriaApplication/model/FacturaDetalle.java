@@ -1,5 +1,6 @@
 package py.edu.uaa.FerreteriaApplication.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ public class FacturaDetalle {
 
     @ManyToOne
     @MapsId("facturaId")
+    @JsonBackReference
     private Factura factura;
 
     @ManyToOne
@@ -41,6 +43,14 @@ public class FacturaDetalle {
 
     public void setId(FacturaDetalleId id) {
         this.id = id;
+    }
+
+    public Factura getFactura() {
+        return factura;
+    }
+
+    public void setFactura(Factura factura) {
+        this.factura = factura;
     }
 
     public Producto getProducto() {
