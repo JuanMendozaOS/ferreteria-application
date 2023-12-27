@@ -6,6 +6,9 @@ public class FacturaDetalleId {
     private Long facturaId;
     private Integer item;
 
+    public FacturaDetalleId() {
+    }
+
     public FacturaDetalleId(Long facturaId, Integer item) {
         this.facturaId = facturaId;
         this.item = item;

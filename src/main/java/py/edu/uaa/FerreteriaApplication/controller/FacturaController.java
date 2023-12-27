@@ -3,6 +3,7 @@ package py.edu.uaa.FerreteriaApplication.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import py.edu.uaa.FerreteriaApplication.model.ConsultaVentaRequest;
 import py.edu.uaa.FerreteriaApplication.model.Factura;
 import py.edu.uaa.FerreteriaApplication.service.FacturaService;
 
@@ -43,6 +44,12 @@ public class FacturaController {
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable Long id) {
         service.delete(id);
+    }
+
+    @PostMapping("/consulta")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Factura> consulta(@RequestBody ConsultaVentaRequest request) {
+        return service.consultaVenta(request);
     }
 
 }

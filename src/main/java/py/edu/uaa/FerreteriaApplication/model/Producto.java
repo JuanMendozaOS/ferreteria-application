@@ -15,8 +15,6 @@ public class Producto {
     private BigDecimal precioCompra;
     private Integer porcentajeGanancia;
     private BigDecimal precioVenta;
-
-    @Enumerated(EnumType.STRING)
     private TipoIva tipoIva;
     @ManyToOne
     private UnidadMedida unidadMedida;
