@@ -10,7 +10,10 @@ import org.springframework.web.client.RestTemplate;
 import py.edu.uaa.FerreteriaApplication.model.FacturaDetalle;
 import py.edu.uaa.FerreteriaApplication.model.Producto;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -170,6 +173,13 @@ public class AgregarDetalle extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel10MouseClicked
 
     private void guardarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBtnActionPerformed
+        String selectedItem = (String) productoCombo.getSelectedItem();
+        Long productoId = Long.valueOf(selectedItem.split(" ")[0]);
+        Optional<Producto> productoOptional = productos.stream()
+                .filter(p -> p.getId().equals(productoId))
+                .findFirst();
+
+
 
     }//GEN-LAST:event_guardarBtnActionPerformed
 
@@ -179,6 +189,7 @@ public class AgregarDetalle extends javax.swing.JFrame {
                 Producto[].class);
 
         Producto[] dataList = response.getBody();
+        productos = Arrays.asList(dataList);
         productoCombo.addItem("");
 
         for (Producto producto : dataList) {
@@ -236,4 +247,6 @@ public class AgregarDetalle extends javax.swing.JFrame {
     private javax.swing.JTextField precioUnitarioTxt;
     private javax.swing.JComboBox<String> productoCombo;
     // End of variables declaration//GEN-END:variables
+
+    private List<Producto> productos;
 }

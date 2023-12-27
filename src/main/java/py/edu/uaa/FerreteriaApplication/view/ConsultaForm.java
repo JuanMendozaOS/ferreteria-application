@@ -5,9 +5,18 @@
  */
 package py.edu.uaa.FerreteriaApplication.view;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import py.edu.uaa.FerreteriaApplication.model.Cliente;
+import py.edu.uaa.FerreteriaApplication.model.ConsultaVentaRequest;
+import py.edu.uaa.FerreteriaApplication.model.Factura;
+import py.edu.uaa.FerreteriaApplication.model.Proveedor;
+
+import javax.swing.table.DefaultTableModel;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -149,18 +158,8 @@ public class ConsultaForm extends javax.swing.JFrame {
         );
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 470, 120));
+        fetchClientes();
 
-        consultaTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
         jScrollPane1.setViewportView(consultaTable);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 470, 200));
@@ -184,13 +183,47 @@ public class ConsultaForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel11MouseClicked
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-
         setVisible(false);
     }//GEN-LAST:event_jLabel10MouseClicked
 
     private void aceptarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarBtnActionPerformed
-        // TODO add your handling code here:
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String selectedItem = (String) clienteCombo.getSelectedItem();
+        Long clienteId = Long.valueOf(selectedItem.split(" ")[0]);
+
+        ConsultaVentaRequest request = new ConsultaVentaRequest();
+        request.setClienteId(clienteId);
+        request.setFechaInicio(LocalDate.parse(desdeFechaTxt.getText(), formatter));
+        request.setFechaFin(LocalDate.parse(hastaFechaTxt.getText(), formatter));
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Factura[]> response = restTemplate.exchange("http://localhost:8080/api/facturas/consulta",
+                HttpMethod.POST, new HttpEntity<>(request), Factura[].class);
+
+        DefaultTableModel model = (DefaultTableModel) consultaTable.getModel();
+        if (model.getColumnCount() == 0) {
+            model.addColumn("Id");
+            model.addColumn("Fecha");
+            model.addColumn("Total Exenta");
+            model.addColumn("Total Iva5");
+            model.addColumn("Total Iva10");
+            model.addColumn("Total Comprobante");
+            model.addColumn("Condicion Pago");
+        }
+
+        // Clear existing data in the table
+        model.setRowCount(0);
+
+        // Populate the table with the fetched data
+        for (Factura factura : response.getBody()) {
+            Object[] rowData = {factura.getId(), factura.getFecha(),factura.getImporteTotalExenta(),
+                    factura.getImporteTotalIva5(), factura.getImporteTotalIva10(),
+                    factura.getImporteTotalComprobante(), factura.getCondicionPago()};
+            model.addRow(rowData);
+        }
+
     }//GEN-LAST:event_aceptarBtnActionPerformed
+
     private void fetchClientes() {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Cliente[]> response = restTemplate.getForEntity("http://localhost:8080/api/clientes",
