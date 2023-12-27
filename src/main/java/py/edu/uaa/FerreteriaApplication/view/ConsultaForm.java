@@ -48,7 +48,7 @@ public class ConsultaForm extends javax.swing.JFrame {
         aceptarBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         consultaTable = new javax.swing.JTable();
-        fetchClientes();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -99,6 +99,11 @@ public class ConsultaForm extends javax.swing.JFrame {
         hastaFechaTxt.setText("jTextField2");
 
         aceptarBtn.setText("Aceptar");
+        aceptarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aceptarBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -182,6 +187,10 @@ public class ConsultaForm extends javax.swing.JFrame {
 
         setVisible(false);
     }//GEN-LAST:event_jLabel10MouseClicked
+
+    private void aceptarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_aceptarBtnActionPerformed
     private void fetchClientes() {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Cliente[]> response = restTemplate.getForEntity("http://localhost:8080/api/clientes",
