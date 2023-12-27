@@ -9,13 +9,18 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import py.edu.uaa.FerreteriaApplication.app.exception.ResourceNotFoundException;
 import py.edu.uaa.FerreteriaApplication.model.Agrupacion;
 import py.edu.uaa.FerreteriaApplication.model.Cliente;
 import py.edu.uaa.FerreteriaApplication.model.Producto;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -196,6 +201,18 @@ public class FacturaForm extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
+        productoCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productoComboActionPerformed(evt);
+            }
+        });
+
+        cantidadTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cantidadTxtActionPerformed(evt);
+            }
+        });
+
         quitarBtn.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -283,6 +300,7 @@ public class FacturaForm extends javax.swing.JFrame {
         jLabel9.setText("Cantidad");
 
         precioUnitarioTxt.setEditable(false);
+        tipoIvaTxt.setEditable(false);
 
         jLabel12.setFont(new java.awt.Font("Corbel", 0, 14)); // NOI18N
         jLabel12.setText("Precio Unitario");
@@ -303,7 +321,7 @@ public class FacturaForm extends javax.swing.JFrame {
 
         jLabel13.setText("Tipo Iva");
 
-        jLabel14.setText("jLabel14");
+        jLabel14.setText("Total Importe");
 
         totalTxt.setEditable(false);
 
@@ -373,6 +391,9 @@ public class FacturaForm extends javax.swing.JFrame {
                 .addContainerGap(74, Short.MAX_VALUE))
         );
 
+        fetchClientes();
+        fetchProductos();
+
         jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 320, 300));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -390,6 +411,32 @@ public class FacturaForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cantidadTxtActionPerformed(ActionEvent evt) {
+        String cantidadString = cantidadTxt.getText();
+        System.out.println(cantidadString);
+        if(cantidadString.equals("")){
+            totalTxt.setText("");
+            return;
+        }
+
+        String selectedProducto = (String) productoCombo.getSelectedItem();
+        System.out.println(selectedProducto);
+
+        if(selectedProducto.equals("")){
+            return;
+        }
+
+        Long productoId = Long.valueOf(selectedProducto.split(" ")[0]);
+        Producto producto = productos.stream()
+                .filter(p -> p.getId().equals(productoId))
+                .findFirst()
+                .orElseThrow(ResourceNotFoundException::new);
+
+
+        BigDecimal totalImporte = producto.getPrecioVenta().multiply(new BigDecimal(cantidadTxt.getText()));
+        totalTxt.setText(String.valueOf(totalImporte));
+    }
 
     private void fetchClientes() {
         RestTemplate restTemplate = new RestTemplate();
@@ -458,12 +505,41 @@ public class FacturaForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_fechaTxtFocusLost
 
-  private void fetchProductos() {
+    private void productoComboActionPerformed(ActionEvent evt) {
+        String selectedItem = (String) productoCombo.getSelectedItem();
+        if (selectedItem.equals("")) {
+            precioUnitarioTxt.setText("");
+            totalTxt.setText("");
+            tipoIvaTxt.setText("");
+            return;
+        }
+
+        Long productoId = Long.valueOf(selectedItem.split(" ")[0]);
+        Producto producto = productos.stream()
+                .filter(p -> p.getId().equals(productoId))
+                .findFirst()
+                .orElseThrow(ResourceNotFoundException::new);
+
+        precioUnitarioTxt.setText(String.valueOf(producto.getPrecioVenta()));
+        tipoIvaTxt.setText(String.valueOf(producto.getTipoIva()));
+
+        if(cantidadTxt.getText().equals("")){
+            totalTxt.setText("");
+            return;
+        }
+
+        BigDecimal totalImporte = producto.getPrecioVenta().multiply(new BigDecimal(cantidadTxt.getText()));
+        totalTxt.setText(String.valueOf(totalImporte));
+
+    }
+
+    private void fetchProductos() {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Producto[]> response = restTemplate.getForEntity("http://localhost:8080/api/productos",
                 Producto[].class);
 
         Producto[] dataList = response.getBody();
+        productos = Arrays.asList(dataList);
         productoCombo.addItem("");
 
         for (Producto producto : dataList) {
@@ -545,4 +621,6 @@ public class FacturaForm extends javax.swing.JFrame {
     private javax.swing.JTextField tipoIvaTxt;
     private javax.swing.JTextField totalTxt;
     // End of variables declaration//GEN-END:variables
+
+    private List<Producto> productos;
 }
