@@ -5,14 +5,10 @@
  */
 package py.edu.uaa.FerreteriaApplication.view;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import py.edu.uaa.FerreteriaApplication.app.exception.ResourceNotFoundException;
-import py.edu.uaa.FerreteriaApplication.model.Agrupacion;
-import py.edu.uaa.FerreteriaApplication.model.Cliente;
-import py.edu.uaa.FerreteriaApplication.model.Producto;
+import py.edu.uaa.FerreteriaApplication.model.*;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -21,6 +17,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -63,7 +60,7 @@ public class FacturaForm extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        quitarBtn = new javax.swing.JTable();
+        detalleTable = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -213,26 +210,7 @@ public class FacturaForm extends javax.swing.JFrame {
             }
         });
 
-        quitarBtn.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Producto", "Cantidad", "Precio Unitario"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(quitarBtn);
+        jScrollPane1.setViewportView(detalleTable);
 
         jLabel5.setText("Total Exenta");
 
@@ -479,11 +457,88 @@ public class FacturaForm extends javax.swing.JFrame {
 //GEN-LAST:event_condicionTxtFocusLost
 
     private void agregarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarBtnActionPerformed
+        FacturaDetalle detalle = new FacturaDetalle();
+
+        String selectedProducto = (String) productoCombo.getSelectedItem();
+        Long productoId = Long.valueOf(selectedProducto.split(" ")[0]);
+        Producto producto = productos.stream()
+                .filter(p -> p.getId().equals(productoId))
+                .findFirst()
+                .orElseThrow(ResourceNotFoundException::new);
+
+        FacturaDetalleId facturaDetalleId = new FacturaDetalleId();
+        facturaDetalleId.setItem(detalles.size() + 1);
+
+        int cantidad = Integer.parseInt(cantidadTxt.getText());
+        BigDecimal precioUnitario = new BigDecimal(precioUnitarioTxt.getText());
+
+        BigDecimal totalImporte = new BigDecimal(totalTxt.getText());
+        switch (producto.getTipoIva()) {
+            case EXENTA -> detalle.setImporteTotalExenta(totalImporte);
+            case IVA_5 -> detalle.setImporteTotalIva5(totalImporte);
+            case IVA_10 -> detalle.setImporteTotalIva10(totalImporte);
+        }
+
+        detalle.setProducto(producto);
+        detalle.setCantidad(cantidad);
+        detalle.setPrecioUnitario(precioUnitario);
+        detalle.setId(facturaDetalleId);
+
+        detalles.add(detalle);
+
+        DefaultTableModel model = (DefaultTableModel) detalleTable.getModel();
+        if (model.getColumnCount() == 0) {
+            model.addColumn("Producto");
+            model.addColumn("Cantidad");
+            model.addColumn("Precio Unitario");
+            model.addColumn("Total");
+        }
+
+        // Clear existing data in the table
+        model.setRowCount(0);
+
+        // Populate the table with the fetched data
+        for (FacturaDetalle facturaDetalle : detalles) {
+            BigDecimal importeTotal = BigDecimal.ZERO;
+            switch (producto.getTipoIva()) {
+                case EXENTA -> importeTotal = detalle.getImporteTotalExenta();
+                case IVA_5 -> importeTotal = detalle.getImporteTotalIva5();
+                case IVA_10 -> importeTotal = detalle.getImporteTotalIva10();
+            }
+
+            Object[] rowData = {facturaDetalle.getProducto().getNombre(), facturaDetalle.getCantidad(), facturaDetalle.getPrecioUnitario(),
+                    importeTotal};
+            model.addRow(rowData);
+        }
+
+
+        BigDecimal[] totalExentas = {BigDecimal.ZERO};
+        BigDecimal[] totalIva5 = {BigDecimal.ZERO};
+        BigDecimal[] totalIva10 = {BigDecimal.ZERO};
+
+        detalles.forEach(d -> {
+            switch (d.getProducto().getTipoIva()) {
+                case EXENTA -> totalExentas[0] = totalExentas[0].add(d.getImporteTotalExenta());
+                case IVA_5 -> totalIva5[0] = totalIva5[0].add(d.getImporteTotalIva5());
+                case IVA_10 -> totalIva10[0] = totalIva10[0].add(d.getImporteTotalIva10());
+            }
+        });
+
+        exentaTxt.setText(String.valueOf(totalExentas[0]));
+        iva5Txt.setText(String.valueOf(totalIva5[0]));
+        iva10Txt.setText(String.valueOf(totalIva10[0]));
 
     }//GEN-LAST:event_agregarBtnActionPerformed
 
     private void borrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarBtnActionPerformed
-        // TODO add your handling code here:
+        if(!detalles.isEmpty()){
+            detalles.remove(detalles.size() - 1);
+
+            DefaultTableModel model = (DefaultTableModel) detalleTable.getModel();
+
+            // Clear existing data in the table
+            model.setRowCount(detalles.size());
+        }
     }//GEN-LAST:event_borrarBtnActionPerformed
 
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
@@ -617,10 +672,11 @@ public class FacturaForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField precioUnitarioTxt;
     private javax.swing.JComboBox<String> productoCombo;
-    private javax.swing.JTable quitarBtn;
+    private javax.swing.JTable detalleTable;
     private javax.swing.JTextField tipoIvaTxt;
     private javax.swing.JTextField totalTxt;
     // End of variables declaration//GEN-END:variables
 
     private List<Producto> productos;
+    private List<FacturaDetalle> detalles = new ArrayList<>();
 }

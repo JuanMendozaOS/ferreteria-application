@@ -35,6 +35,14 @@ public class FacturaDetalle {
         this.importeTotalIva10 = importeTotalIva10;
     }
 
+    public FacturaDetalleId getId() {
+        return id;
+    }
+
+    public void setId(FacturaDetalleId id) {
+        this.id = id;
+    }
+
     public Producto getProducto() {
         return producto;
     }
